@@ -5,6 +5,7 @@
     - mysql-server
     - mysql-devel # for MySQL-python
     - gcc         # for MySQL-python
+    - zabbix-server-mysql.x86_64
 
 - name: Install MySQL-python
   pip: name=MySQL-python state=latest
