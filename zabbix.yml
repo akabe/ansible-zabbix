@@ -1,0 +1,21 @@
+---
+
+- hosts: zabbix-server
+  user: ec2-user
+  become: true
+  gather_facts: false
+  roles:
+    - zabbix-server
+
+- hosts: zabbix-agent
+  user: ec2-user
+  become: true
+  gather_facts: false
+  vars:
+    zabbix_agent:
+      master: 10.0.0.1 # zabbix server
+  roles:
+    - zabbix-agent
+  tasks:
+    - yum: name=nginx state=present
+    - service: name=nginx state=started

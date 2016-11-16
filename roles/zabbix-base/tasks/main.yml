@@ -1,0 +1,13 @@
+---
+
+- yum: name=* state=latest
+
+- name: Check zabbix installed
+  command: rpm -q "{{ zabbix_base.rpm.name }}"
+  register: r_zabbix_rpm_ivh
+  ignore_errors: true
+  changed_when: false
+
+- name: Install zabbix
+  command: rpm -ivh "{{ zabbix_base.rpm.url }}"
+  when: r_zabbix_rpm_ivh|failed

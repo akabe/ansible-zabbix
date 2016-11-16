@@ -1,0 +1,46 @@
+---
+
+- yum: name={{ item }} state=latest
+  with_items:
+    - httpd24
+    - php56
+    - php56-gd
+    - php56-mbstring
+    - php56-mysqlnd
+    - php56-bcmath
+    - zabbix-server-mysql.x86_64
+    - zabbix-web-mysql.noarch
+    - zabbix-web-japanese.noarch
+    - zabbix-get
+
+- template:
+    src: php.ini
+    dest: /etc/php.ini
+    owner: apache
+    group: apache
+    mode: 0644
+  notify: Restart zabbix
+
+- template:
+    src: zabbix.conf.php
+    dest: /etc/zabbix/web/zabbix.conf.php
+    owner: apache
+    group: apache
+    mode: 0644
+  notify: Restart zabbix
+
+- template:
+    src: zabbix.conf
+    dest: /etc/httpd/conf.d/zabbix.conf
+    owner: apache
+    group: apache
+    mode: 0644
+  notify: Restart zabbix
+
+- template:
+    src: zabbix_server.conf
+    dest: /etc/zabbix/zabbix_server.conf
+    owner: apache
+    group: apache
+    mode: 0644
+  notify: Restart zabbix

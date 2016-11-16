@@ -1,0 +1,34 @@
+---
+
+- yum: name={{ item }} state=latest
+  with_items:
+    - mysql-server
+    - mysql-devel # for MySQL-python
+    - gcc         # for MySQL-python
+
+- name: Install MySQL-python
+  pip: name=MySQL-python state=latest
+
+- name: Start mysqld
+  service: name=mysqld state=started
+
+- name: Create zabbix db
+  mysql_db: name={{ zabbix_mysql.database }} state=present
+
+- name: Create zabbix user
+  mysql_user:
+    name={{ zabbix_mysql.username }}
+    password={{ zabbix_mysql.password }}
+    priv=zabbix.*:ALL
+    host={{ zabbix_mysql.host }}
+    state=present
+
+- name: Check zabbix db initialization
+  shell: mysql -uroot "{{ zabbix_mysql.database }}" -e 'SHOW TABLES;'
+  register: r_zabbix_mysql_tables
+  ignore_errors: true
+  changed_when: false
+
+- name: Initialize zabbix db
+  shell: zcat "{{ zabbix_mysql.init_sql }}" | mysql -uroot "{{ zabbix_mysql.database }}"
+  when: r_zabbix_mysql_tables.stdout.find('application_discovery') == -1

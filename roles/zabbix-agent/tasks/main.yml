@@ -1,0 +1,8 @@
+---
+
+- yum: name=zabbix-agent state=latest
+
+- template:
+    src=zabbix_agentd.conf
+    dest=/etc/zabbix/zabbix_agentd.conf
+  notify: Restart zabbix-agent

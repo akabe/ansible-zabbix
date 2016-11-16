@@ -1,0 +1,7 @@
+---
+
+- name: Restart zabbix
+  service: name={{ item }} state=restarted enabled=yes
+  with_items:
+    - zabbix-server
+    - httpd

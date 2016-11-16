@@ -1,0 +1,6 @@
+---
+
+zabbix_server:
+  name: zabbix # arbitrary server name
+  port: 10051
+  timezone: Asia/Tokyo

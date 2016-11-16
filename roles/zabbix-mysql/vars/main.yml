@@ -1,0 +1,9 @@
+---
+
+zabbix_mysql:
+  host: localhost
+  port: 3306
+  database: zabbix
+  username: zabbix
+  password: 12345
+  init_sql: /usr/share/doc/zabbix-server-mysql-3.0.5/create.sql.gz
