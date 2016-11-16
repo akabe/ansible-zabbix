@@ -13,9 +13,34 @@
   gather_facts: false
   vars:
     zabbix_agent:
-      master: 10.0.0.1 # zabbix server
+      master: 10.0.0.1 # zabbix server (private ip)
   roles:
     - zabbix-agent
   tasks:
     - yum: name=nginx state=present
     - service: name=nginx state=started
+
+- hosts: localhost
+  connection: local
+  vars:
+    zabbix_server: 10.0.0.1 # zabbix server (public ip)
+    zabbix_agent: 10.0.0.1 # zabbix agent (private ip)
+  tasks:
+    - zabbix_host:
+        server_url: "http://{{ zabbix_server }}/zabbix"
+        login_user: admin
+        login_password: zabbix
+        host_name: ExampleHost
+        host_groups:
+          - Linux servers
+        link_templates:
+          - Template OS Linux
+        status: enabled
+        state: present
+        interfaces:
+          - type: 1
+            main: 1
+            useip: 1
+            ip: "{{ zabbix_agent }}"
+            dns: ""
+            port: 10050

@@ -3,6 +3,7 @@
 Launch Zabbix server and agent by ansible
 
 ```
+pip install zabbix-api
 ansible-playbook --private-key ~/.ssh/your-key.pem zabbix.yml
 ```
 
